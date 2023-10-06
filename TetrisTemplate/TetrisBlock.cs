@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// hallo
+// hallo  a[spdaspd
     class TetrisBlock
     {
         void RotateClockwise(bool[,] a)
