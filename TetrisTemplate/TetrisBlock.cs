@@ -6,18 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TetrisTemplate
-{
+
     class TetrisBlock
     {
+        void RotateClockwise(bool[,] a)
+        {
 
-        void RotateBlock();
-
+        }
     }
     class tshape : TetrisBlock
     {
         bool[,] t_block = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
-
     }
 
     class lshape : TetrisBlock
@@ -50,4 +49,3 @@ namespace TetrisTemplate
         bool[,] o_shape = new bool[2, 2] { { true, true }, { true, true } };
     }
 
-}
