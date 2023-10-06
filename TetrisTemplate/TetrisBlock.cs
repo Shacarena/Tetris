@@ -1,17 +1,27 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-// hallo  a[spdaspd
     class TetrisBlock
     {
-        void RotateClockwise(bool[,] a)
+        bool[,] RotateClockwise(bool[,] shape) // draait het blok
         {
-
+        for (int row = 0; row < shape.Length; row++) // buitenste loop voor roteren
+        {
+            for(int col = row; col <shape.Length; col++) // binnenste loop voor roteren
+            {
+                bool tijdelijk = shape[row,col]; // een tijdelijke 2d array maken om de nieuwe waardes op te slaap
+                shape[row, col] = shape[shape.Length - 1 - col, row]; // 'swappen' volgens de regels voor matrices
+                shape[shape.Length - 1 - col, row] = shape[shape.Length - 1 - row, shape.Length - 1 - col];
+                shape[shape.Length - 1 - row, shape.Length - 1 - col] = shape[col, shape.Length - 1 - row];
+                shape[col, shape.Length - 1 - row] = tijdelijk;
+            }          
+        }
+        return shape;
         }
     }
     class tshape : TetrisBlock
