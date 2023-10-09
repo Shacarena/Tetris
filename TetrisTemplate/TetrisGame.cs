@@ -65,7 +65,7 @@ class TetrisGame : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.White);
+        GraphicsDevice.Clear(Color.Gray);
         gameWorld.Draw(gameTime, spriteBatch);
     }
 }

@@ -1,18 +1,15 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-    class TetrisBlock
+
+
+class TetrisBlock
     {
         bool[,] RotateClockwise(bool[,] shape) // draait het blok
         {
         for (int row = 0; row < shape.Length; row++) // buitenste loop voor roteren
         {
-            for(int col = row; col <shape.Length; col++) // binnenste loop voor roteren
+            for(int col = row; col < shape.Length; col++) // binnenste loop voor roteren
             {
                 bool tijdelijk = shape[row,col]; // een tijdelijke 2d array maken om de nieuwe waardes op te slaap
                 shape[row, col] = shape[shape.Length - 1 - col, row]; // 'swappen' volgens de regels voor matrices
@@ -26,36 +23,36 @@ using System.Threading.Tasks;
     }
     class tshape : TetrisBlock
     {
-        bool[,] t_block = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
+        int[,] t_block = new int[3, 3] { { 1, 1, 1 }, { 0, 1, 0 }, { 0, 0, 0 } };
     }
 
     class lshape : TetrisBlock
     {
-        bool[,] l_block = new bool[3, 3] { { true, false, false }, { true, false, false }, { true, true, false } };
+        int[,] l_block = new int[3, 3] { { 2, 0, 0}, { 2, 0, 0 }, { 2, 2, 0 } };
     }
 
     class sshape : TetrisBlock
     {
-        bool[,] s_block = new bool[3, 3] { { false, false, false }, { false, true, true }, { true, true, false } };
+        int[,] s_block = new int[3, 3] { { 0, 0, 0 }, { 0, 3, 3 }, { 3, 3, 0 } };
     }
 
     class jshape : TetrisBlock
     {
-        bool[,] j_shape = new bool[3, 3] { { false, false, true }, { false, false, true }, { false, true, true } };
+        int[,] j_shape = new int[3, 3] { { 0, 0, 4 }, { 0, 0, 4}, { 0, 4, 4 } };
     }
 
     class ishape : TetrisBlock
     {
-        bool[,] i_shape = new bool[4, 4] { { true, false, false, false }, { true, false, false, false }, { true, false, false, false }, { true, false, false, false } };
+        int[,] i_shape = new int[3, 3] { { 5, 0, 0 }, { 5, 0, 0, }, { 5, 0, 0 } };
     }
 
     class zshape : TetrisBlock
     {
-        bool[,] z_shape = new bool[3, 3] { { false, false, false }, { true, true, false }, { false, true, true } };
+        int[,] z_shape = new int[3, 3] { { 0, 0, 0 }, { 6, 6, 0 }, { 0, 6, 6} };
     }
 
     class oshape : TetrisBlock
     {
-        bool[,] o_shape = new bool[2, 2] { { true, true }, { true, true } };
+        int[,] o_shape = new int[2, 2] { { 7, 7 }, { 7, 7} };
     }
 
