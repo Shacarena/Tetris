@@ -6,7 +6,6 @@ namespace TetrisTemplate
 {
     internal class BlockPosition
     {
-        
         public BlockPosition(int row, int column)
         {
 
