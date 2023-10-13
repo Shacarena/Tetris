@@ -7,7 +7,7 @@ using System.Data;
 Texture2D block;
 block = TetrisGame.ContentManager.Load<Texture2D>("block");
 class TetrisBlock
-    {
+{
     bool[,] RotateClockwise(bool[,] shape) // draait het blok
     {
         for (int row = 0; row < shape.Length; row++) // buitenste loop voor roteren
@@ -22,12 +22,13 @@ class TetrisBlock
             }
         }
         return shape;
-    } 
+    }
+   
 
     // ??????????
 
     }
-    class tshape : TetrisBlock
+class tshape : TetrisBlock
     {
         public bool[,] shape = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
         public Color color = Color.Purple;
