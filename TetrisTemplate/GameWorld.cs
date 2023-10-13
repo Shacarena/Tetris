@@ -56,6 +56,7 @@ class GameWorld
     public void Update(GameTime gameTime)
     {
         Color[,] gridbezet = new Color[grid.Width, grid.Height];
+        
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

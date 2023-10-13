@@ -24,6 +24,7 @@ class TetrisGrid
 
     // Grid om te bepalen welke kleuren waar getekend moeten worden
     Color[,] gridBezet;
+    bool[,] grid;
 
     /// <summary>
     /// Creates a new TetrisGrid.
@@ -34,6 +35,8 @@ class TetrisGrid
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         position = Vector2.Zero;
         gridBezet = new Color[Width, Height];
+        grid = new bool[Width, Height];
+        
         Clear();
     }
 
@@ -49,7 +52,10 @@ class TetrisGrid
         {
             for (int breedte = 0; breedte < Width; breedte++) // voor de volledige breedte een achtergrond-blokje op de grid tekenen
             {
-                spriteBatch.Draw(emptyCell, new Rectangle(breedte * emptyCell.Width, hoogte * emptyCell.Height, emptyCell.Width, emptyCell.Height), Color.White);
+                
+                
+                if (grid[breedte, hoogte]) spriteBatch.Draw(emptyCell, new Rectangle(breedte * emptyCell.Width, hoogte * emptyCell.Height, emptyCell.Width, emptyCell.Height), Color.Black);
+                else spriteBatch.Draw(emptyCell, new Rectangle(breedte * emptyCell.Width, hoogte * emptyCell.Height, emptyCell.Width, emptyCell.Height), Color.White);
             }
         }
 

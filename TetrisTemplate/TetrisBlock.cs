@@ -1,13 +1,23 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Data;
 
-Texture2D block;
-block = TetrisGame.ContentManager.Load<Texture2D>("block");
-class TetrisBlock
+class TetrisBlock : Game
 {
+
+
+    protected Vector2 Start;
+
+    public TetrisBlock()
+    {
+        Start = new Vector2(Width/2, Height/2);
+        
+    }
+
+    public float Width { get; }
+    public float Height { get; }
+
     bool[,] RotateClockwise(bool[,] shape) // draait het blok
     {
         for (int row = 0; row < shape.Length; row++) // buitenste loop voor roteren
