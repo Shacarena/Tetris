@@ -1,8 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Data;
 
-
+Texture2D block;
+block = TetrisGame.ContentManager.Load<Texture2D>("block");
 class TetrisBlock
     {
     bool[,] RotateClockwise(bool[,] shape) // draait het blok
@@ -19,42 +22,50 @@ class TetrisBlock
             }
         }
         return shape;
-    }
+    } 
+
+    // ??????????
 
     }
     class tshape : TetrisBlock
     {
-
-        public bool[,] t_block = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
+        public bool[,] shape = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
+        public Color color = Color.Purple;
     }
 
     class lshape : TetrisBlock
     {
-        bool[,] l_block = new bool[3, 3] { { true, false, false }, { true, false, false }, { true, true, false } };
+        public bool[,] shape = new bool[3, 3] { { true, false, false }, { true, false, false }, { true, true, false } };
+        public Color color = Color.Orange;
     }
 
     class sshape : TetrisBlock
     {
-        bool[,] s_block = new bool[3, 3] { { false, false, false }, { false, true, true }, { true, true, false } };
+        public bool[,] shape = new bool[3, 3] { { false, false, false }, { false, true, true }, { true, true, false } };
+        public Color color = Color.Green;
     }
 
     class jshape : TetrisBlock
     {
-        bool[,] j_shape = new bool[3, 3] { { false, false, true }, { false, false, true }, { false, true, true } };
+        public bool[,] shape = new bool[3, 3] { { false, false, true }, { false, false, true }, { false, true, true } };
+        public Color color = Color.DarkBlue;
     }
 
     class ishape : TetrisBlock
     {
-        bool[,] i_shape = new bool[4, 4] { { true, false, false, false }, { true, false, false, false}, { true, false, false, false } , { true, false, false, false } };
+        public bool[,] shape = new bool[4, 4] { { true, false, false, false }, { true, false, false, false}, { true, false, false, false } , { true, false, false, false } };
+        public Color color = Color.LightBlue;
     }
 
     class zshape : TetrisBlock
     {
-        bool[,] z_shape = new bool[3, 3] { { false, false, false }, { true, true, false }, { false, true, true } };
+        public bool[,] shape = new bool[3, 3] { { false, false, false }, { true, true, false }, { false, true, true } };
+        public Color color = Color.Red;
     }
 
     class oshape : TetrisBlock
-    {
-        bool[,] o_shape = new bool[2, 2] { { true, true }, { true, true } };
+    { 
+        public bool[,] shape = new bool[2, 2] { { true, true }, { true, true } };
+        public Color color = Color.Yellow;
     }
 

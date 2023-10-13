@@ -8,6 +8,7 @@ class TetrisGame : Game
     SpriteBatch spriteBatch;
     InputHelper inputHelper;
     GameWorld gameWorld;
+    Texture2D block;
 
     /// <summary>
     /// A static reference to the ContentManager object, used for loading assets.
@@ -45,7 +46,8 @@ class TetrisGame : Game
 
         // create the input helper object
         inputHelper = new InputHelper();
-    }
+        bool[,] t_block = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
+}
 
     protected override void LoadContent()
     {
@@ -54,6 +56,7 @@ class TetrisGame : Game
         // create and reset the game world
         gameWorld = new GameWorld();
         gameWorld.Reset();
+        block = TetrisGame.ContentManager.Load<Texture2D>("block");
     }
 
     protected override void Update(GameTime gameTime)
@@ -61,12 +64,13 @@ class TetrisGame : Game
         inputHelper.Update(gameTime);
         gameWorld.HandleInput(gameTime, inputHelper);
         gameWorld.Update(gameTime);
-    }
+}
 
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Gray);
         gameWorld.Draw(gameTime, spriteBatch);
+        // om zo meteen de juiste blokken te kunnen tekenen
     }
 }
 
