@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 
 /// <summary>
@@ -38,17 +39,14 @@ class GameWorld
     /// The main grid of the game.
     /// </summary>
     TetrisGrid grid;
-    TetrisBlock tblock = new lshape();
+    TetrisBlock block = new lshape();
 
     public GameWorld()
     {
         random = new Random();
         gameState = GameState.Playing;
-
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
-
         grid = new TetrisGrid();
-        tshape tshape = new tshape();
 }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
@@ -58,13 +56,15 @@ class GameWorld
     public void Update(GameTime gameTime)
     {
         Color[,] gridbezet = new Color[grid.Width, grid.Height];
+        block.Update(gameTime); // not sure met deze
+
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
         grid.Draw(gameTime, spriteBatch);
-        tblock.Draw(gameTime, spriteBatch);
+        block.Draw(gameTime, spriteBatch);
         spriteBatch.End();
     }
 

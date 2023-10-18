@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Data;
 
@@ -10,28 +11,36 @@ class TetrisBlock : Game
     public bool[,] shape;
     public float Width { get; }
     public float Height { get; }
+    public int xoffset;
+    public int yoffset;
 
-    bool[,] RotateClockwise(bool[,] shape) // draait het blok
+
+    bool[,] RotateClockwise(bool[,] shape) // draait het blok, hiervan moeten de GetLengths nog even aangepast worden naar de juiste 0 of 1
     {
-        for (int row = 0; row < shape.Length; row++) // buitenste loop voor roteren
+        for (int row = 0; row < shape.GetLength(0); row++) // buitenste loop voor roteren
         {
-            for (int col = row; col < shape.Length; col++) // binnenste loop voor roteren
+            for (int col = row; col < shape.GetLength(0); col++) // binnenste loop voor roteren
             {
                 bool tijdelijk = shape[row, col]; // een tijdelijke 2d array maken om de nieuwe waardes op te slaap
-                shape[row, col] = shape[shape.Length - 1 - col, row]; // 'swappen' volgens de regels voor matrices
-                shape[shape.Length - 1 - col, row] = shape[shape.Length - 1 - row, shape.Length - 1 - col];
-                shape[shape.Length - 1 - row, shape.Length - 1 - col] = shape[col, shape.Length - 1 - row];
-                shape[col, shape.Length - 1 - row] = tijdelijk;
+                shape[row, col] = shape[shape.GetLength(0) - 1 - col, row]; // 'swappen' volgens de regels voor matrices
+                shape[shape.GetLength(0) - 1 - col, row] = shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col];
+                shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col] = shape[col, shape.GetLength(0) - 1 - row];
+                shape[col, shape.GetLength(0) - 1 - row] = tijdelijk;
             }
         }
         return shape;
     }
+
+    public void Update(GameTime gameTime)
+    {
+       // Keyboard.KeyDown(s);
+       // om de offset aan te passen bij keyboard input
+    }
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        
         Texture2D block;
         block = TetrisGame.ContentManager.Load<Texture2D>("block");
-        Point position = new Point(5 * block.Width, 3*block.Height);
+        Point position = new Point(xoffset * block.Width, yoffset * block.Height);
 
 
         for (int hoogte = 0; hoogte < shape.GetLength(0); hoogte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
