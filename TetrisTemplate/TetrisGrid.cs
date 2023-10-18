@@ -59,19 +59,9 @@ class TetrisGrid
         }
 
         // om de daadwerkelijke blokjes bovenop de achtergrond te tekenen, aan de hand van de gridBezet waarin de kleuren opgeslagen staan
-
-        for (int hoogte = 0; hoogte < Height; hoogte++)
-        {
-            for (int breedte = 0; breedte < Width; breedte++)
-            { 
-               // spriteBatch.Draw(emptyCell, gridBezet[breedte, hoogte]);
-            }
-        }
     }
 
-    /// <summary>
-    /// Clears the grid.
-    /// </summary>
+
     public void Clear()
     {
     }

@@ -65,6 +65,7 @@ class GameWorld
         spriteBatch.Begin();
         grid.Draw(gameTime, spriteBatch);
         block.Draw(gameTime, spriteBatch);
+
         spriteBatch.End();
     }
 

@@ -55,7 +55,7 @@ class TetrisGame : Game
         // create and reset the game world
         gameWorld = new GameWorld();
         gameWorld.Reset();
-        block = TetrisGame.ContentManager.Load<Texture2D>("block");
+        block = ContentManager.Load<Texture2D>("block");
     }
 
     protected override void Update(GameTime gameTime)
