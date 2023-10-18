@@ -38,6 +38,7 @@ class GameWorld
     /// The main grid of the game.
     /// </summary>
     TetrisGrid grid;
+    TetrisBlock block = new tshape();
 
     public GameWorld()
     {
@@ -47,7 +48,8 @@ class GameWorld
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
 
         grid = new TetrisGrid();
-    }
+        tshape tshape = new tshape();
+}
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
@@ -56,14 +58,13 @@ class GameWorld
     public void Update(GameTime gameTime)
     {
         Color[,] gridbezet = new Color[grid.Width, grid.Height];
-        
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
         grid.Draw(gameTime, spriteBatch);
-        spriteBatch.DrawString(font, "Hello!", Vector2.Zero, Color.Blue);
+        block.Draw(gameTime, spriteBatch);
         spriteBatch.End();
     }
 

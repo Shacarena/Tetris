@@ -71,6 +71,10 @@ class TetrisGame : Game
         GraphicsDevice.Clear(Color.Gray);
         gameWorld.Draw(gameTime, spriteBatch);
         // om zo meteen de juiste blokken te kunnen tekenen
+
+
+
+
     }
 }
 
