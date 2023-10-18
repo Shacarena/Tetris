@@ -46,7 +46,6 @@ class TetrisGame : Game
 
         // create the input helper object
         inputHelper = new InputHelper();
-        bool[,] t_block = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
 }
 
     protected override void LoadContent()

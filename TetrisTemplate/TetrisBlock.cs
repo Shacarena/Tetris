@@ -13,7 +13,7 @@ class TetrisBlock : Game
     public float Height { get; }
     public int xoffset;
     public int yoffset;
-
+    InputHelper InputHelper = new InputHelper();
 
     bool[,] RotateClockwise(bool[,] shape) // draait het blok, hiervan moeten de GetLengths nog even aangepast worden naar de juiste 0 of 1
     {
@@ -33,8 +33,17 @@ class TetrisBlock : Game
 
     public void Update(GameTime gameTime)
     {
-       // Keyboard.KeyDown(s);
        // om de offset aan te passen bij keyboard input
+
+       if (InputHelper.KeyDown(Keys.Down) == true)
+        { 
+            yoffset = yoffset + 1;
+        }
+
+       if (InputHelper.KeyDown(Keys.Up) == true)
+        {
+            xoffset = xoffset + 1;
+        }
     }
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
