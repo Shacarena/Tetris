@@ -28,10 +28,10 @@ class TetrisBlock : Game
     }
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        Point position = new Point(5, 3);
+        
         Texture2D block;
         block = TetrisGame.ContentManager.Load<Texture2D>("block");
-       
+        Point position = new Point(5 * block.Width, 3*block.Height);
 
 
         for (int hoogte = 0; hoogte < shape.GetLength(0); hoogte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
@@ -40,7 +40,7 @@ class TetrisBlock : Game
             {
                 if (shape[breedte, hoogte] == true)
                 {
-                    spriteBatch.Draw(block, new Rectangle(breedte * block.Width, hoogte * block.Height, block.Width, block.Height), color);// tekenen
+                    spriteBatch.Draw(block, new Rectangle(position.X + (breedte * block.Width), position.Y + (hoogte * block.Height), block.Width, block.Height), color); // tekenen van de shape met de juiste kleur
                 }
 
             }
@@ -57,38 +57,56 @@ class tshape : TetrisBlock
         }
 }
 
-    class lshape : TetrisBlock
+class lshape : TetrisBlock
+{
+    public lshape()
     {
-        public bool[,] shape = new bool[3, 3] { { true, false, false }, { true, false, false }, { true, true, false } };
-        public Color color = Color.Orange;
+        shape = new bool[3, 3] { { true, false, false }, { true, false, false }, { true, true, false } };
+        color = Color.Orange;
     }
+}
 
-    class sshape : TetrisBlock
+class sshape : TetrisBlock
+{
+    public sshape()
     {
-        public bool[,] shape = new bool[3, 3] { { false, false, false }, { false, true, true }, { true, true, false } };
-        public Color color = Color.Green;
+        shape = new bool[3, 3] { { false, false, false }, { false, true, true }, { true, true, false } };
+        color = Color.Green;
     }
+}
 
-    class jshape : TetrisBlock
+class jshape : TetrisBlock
+{
+    public jshape()
     {
-        public bool[,] shape = new bool[3, 3] { { false, false, true }, { false, false, true }, { false, true, true } };
-        public Color color = Color.DarkBlue;
+        shape = new bool[3, 3] { { false, false, true }, { false, false, true }, { false, true, true } };
+        color = Color.DarkBlue;
     }
+}
 
-    class ishape : TetrisBlock
+class ishape : TetrisBlock
+{
+    public ishape()
     {
-        public bool[,] shape = new bool[4, 4] { { true, false, false, false }, { true, false, false, false }, { true, false, false, false }, { true, false, false, false } };
-        public Color color = Color.LightBlue;
+        shape = new bool[4, 4] { { true, false, false, false }, { true, false, false, false }, { true, false, false, false }, { true, false, false, false } };
+        color = Color.LightBlue;
     }
+}
 
-    class zshape : TetrisBlock
+class zshape : TetrisBlock
+{
+   public zshape()
     {
-        public bool[,] shape = new bool[3, 3] { { false, false, false }, { true, true, false }, { false, true, true } };
-        public Color color = Color.Red;
+        shape = new bool[3, 3] { { false, false, false }, { true, true, false }, { false, true, true } };
+        color = Color.Red;
     }
+}
 
-    class oshape : TetrisBlock
+class oshape : TetrisBlock
+{
+    public oshape()
     {
-        public bool[,] shape = new bool[2, 2] { { true, true }, { true, true } };
-        public Color color = Color.Yellow;
+        shape = new bool[2, 2] { { true, true }, { true, true } };
+        color = Color.Yellow;
     }
+}

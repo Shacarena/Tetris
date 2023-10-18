@@ -38,7 +38,7 @@ class GameWorld
     /// The main grid of the game.
     /// </summary>
     TetrisGrid grid;
-    TetrisBlock block = new tshape();
+    TetrisBlock tblock = new lshape();
 
     public GameWorld()
     {
@@ -64,7 +64,7 @@ class GameWorld
     {
         spriteBatch.Begin();
         grid.Draw(gameTime, spriteBatch);
-        block.Draw(gameTime, spriteBatch);
+        tblock.Draw(gameTime, spriteBatch);
         spriteBatch.End();
     }
 
