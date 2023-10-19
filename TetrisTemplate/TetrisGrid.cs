@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Security.Cryptography.X509Certificates;
 
-/// <summary>
-/// A class for representing the Tetris playing grid.
-/// </summary>
-/// 
+
+
 class TetrisGrid
 {
     /// The sprite of a single empty cell in the grid.
@@ -24,13 +20,10 @@ class TetrisGrid
     public int Height { get { return 20; } }
 
     // Grid om te bepalen welke kleuren waar getekend moeten worden
-    Color[,] gridBezet;
-    bool[,] grid;
+    public Color[,] gridBezet;
+    public bool[,] grid;
 
-    /// <summary>
-    /// Creates a new TetrisGrid.
-    /// </summary>
-    /// <param name="b"></param>
+
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
@@ -41,11 +34,7 @@ class TetrisGrid
         Clear();
     }
 
-    /// <summary>
-    /// Draws the grid on the screen.
-    /// </summary>
-    /// <param name="gameTime">An object with information about the time that has passed in the game.</param>
-    /// <param name="spriteBatch">The SpriteBatch used for drawing sprites and text.</param>
+    
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         // tekenen van de lege grid, voor de achtergrond

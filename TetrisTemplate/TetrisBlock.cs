@@ -3,10 +3,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
-class TetrisBlock : Game
+abstract class TetrisBlock
 {
+    Texture2D block;
+    
     public Color color;
     public bool[,] shape;
     public float Width { get; }
@@ -14,8 +17,17 @@ class TetrisBlock : Game
     public int xoffset;
     public int yoffset;
     InputHelper InputHelper = new InputHelper();
+    Point position = new Point(4, 0);
+    TetrisGrid tetrisgrid;
 
-    bool[,] RotateClockwise(bool[,] shape) // draait het blok, hiervan moeten de GetLengths nog even aangepast worden naar de juiste 0 of 1
+
+    protected TetrisBlock() 
+    {
+        block = TetrisGame.ContentManager.Load<Texture2D>("block");
+        
+    }
+    
+    public void RotateClockwise() // draait het blok, hiervan moeten de GetLengths nog even aangepast worden naar de juiste 0 of 1
     {
         for (int row = 0; row < shape.GetLength(0); row++) // buitenste loop voor roteren
         {
@@ -28,28 +40,17 @@ class TetrisBlock : Game
                 shape[col, shape.GetLength(0) - 1 - row] = tijdelijk;
             }
         }
-        return shape;
     }
 
     public void Update(GameTime gameTime)
     {
        // om de offset aan te passen bij keyboard input
 
-       if (InputHelper.KeyDown(Keys.Down) == true)
-        { 
-            yoffset = yoffset + 1;
-        }
-
-       if (InputHelper.KeyDown(Keys.Up) == true)
-        {
-            xoffset = xoffset + 1;
-        }
     }
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        Texture2D block;
-        block = TetrisGame.ContentManager.Load<Texture2D>("block");
-        Point position = new Point(xoffset * block.Width, yoffset * block.Height);
+        
+        
 
 
         for (int hoogte = 0; hoogte < shape.GetLength(0); hoogte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
@@ -58,13 +59,44 @@ class TetrisBlock : Game
             {
                 if (shape[breedte, hoogte] == true)
                 {
-                    spriteBatch.Draw(block, new Rectangle(position.X + (breedte * block.Width), position.Y + (hoogte * block.Height), block.Width, block.Height), color); // tekenen van de shape met de juiste kleur
+                    spriteBatch.Draw(block, new Rectangle((position.X +breedte ) * block.Width, (position.Y + hoogte) * block.Height, block.Width, block.Height), color); // tekenen van de shape met de juiste kleur
                 }
 
             }
         }
 
     }
+
+ 
+    public void Start(TetrisGrid grid)
+    {
+        tetrisgrid = grid;
+
+    }
+
+    public bool Down()
+    {
+        
+        position.Y += 1;
+        return true;
+    }
+
+    public bool Left()
+    {
+       
+        position.X -= 1;
+        return true;
+    }
+
+    public bool Right()
+    {
+       
+        position.X += 1;
+        return true;
+    }
+
+ 
+
 }
 class tshape : TetrisBlock
 {
