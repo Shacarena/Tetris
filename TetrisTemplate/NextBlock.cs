@@ -10,9 +10,6 @@ namespace TetrisTemplate
     {
         List<TetrisBlock> blocksbag;
         Random random;
-        
-
-
         public NextBlock()
         {
             blocksbag = new List<TetrisBlock>();

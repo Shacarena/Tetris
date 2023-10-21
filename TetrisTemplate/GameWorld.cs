@@ -50,7 +50,7 @@ class GameWorld
         if (inputHelper.KeyPressed(Keys.Right)) { currentblock.Right(); }
         if (inputHelper.KeyPressed(Keys.D)) { currentblock.RotateClockwise(); }
         if (inputHelper.KeyPressed(Keys.A)) { currentblock.RotateCounterClockwise(); }
-        if (inputHelper.KeyPressed(Keys.F)) { grid.AddToGrid(currentblock); Reset(); }
+        if (inputHelper.KeyPressed(Keys.F)) { grid.AddToGrid(currentblock); Reset2(); }
     }
 
     public void Reset()
@@ -60,6 +60,12 @@ class GameWorld
         currentblock.Reset(grid);
     }
 
+    public void Reset2()
+    {
+        currentblock = nextblock;
+        nextblock = newrandomblock.NewNextBlock();
+        currentblock.Reset(grid);
+    }
     public void Update(GameTime gameTime)
     {
         
@@ -75,7 +81,6 @@ class GameWorld
                 }
             }
         }
-
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

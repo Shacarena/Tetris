@@ -47,12 +47,13 @@ class TetrisGame : Game
 
         // create the input helper object
         inputHelper = new InputHelper();
+        
+        
 }
 
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
-
         // create and reset the game world
         gameWorld = new GameWorld();
         gameWorld.Reset();
