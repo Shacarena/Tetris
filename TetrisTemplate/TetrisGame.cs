@@ -9,6 +9,7 @@ class TetrisGame : Game
     InputHelper inputHelper;
     GameWorld gameWorld;
     Texture2D block;
+    public GameWorld gameworld { get { return gameWorld; } }
 
     /// <summary>
     /// A static reference to the ContentManager object, used for loading assets.

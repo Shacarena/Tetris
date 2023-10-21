@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-
+using TetrisTemplate;
 
 class TetrisGrid
 {
@@ -34,7 +33,18 @@ class TetrisGrid
         Clear();
     }
 
-    
+    public void AddToGrid(TetrisBlock currentblock)
+    {
+        for (int col = 0; col < currentblock.shape.GetLength(0); col++) // loop through shape
+        {
+            for (int row = 0; row < currentblock.shape.GetLength(1); row++)
+            {
+                if (currentblock.shape[col, row]) gridBezet[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.color;
+                if (currentblock.shape[col, row]) grid[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.shape[col, row] ;
+            }
+        }
+    }
+
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         // tekenen van de lege grid, voor de achtergrond
@@ -42,12 +52,11 @@ class TetrisGrid
         {
             for (int breedte = 0; breedte < Width; breedte++) // voor de volledige breedte een achtergrond-blokje op de grid tekenen
             {
-                if (grid[breedte, hoogte]) spriteBatch.Draw(emptyCell, new Rectangle(breedte * emptyCell.Width, hoogte * emptyCell.Height, emptyCell.Width, emptyCell.Height), Color.Black);
-                else spriteBatch.Draw(emptyCell, new Rectangle(breedte * emptyCell.Width, hoogte * emptyCell.Height, emptyCell.Width, emptyCell.Height), Color.White);
+                spriteBatch.Draw(emptyCell, new Rectangle(breedte * emptyCell.Width, hoogte * emptyCell.Height, emptyCell.Width, emptyCell.Height), Color.White); // tekenen van lege grid
+                spriteBatch.Draw(emptyCell, new Rectangle(breedte * emptyCell.Width, hoogte * emptyCell.Height, emptyCell.Width, emptyCell.Height), gridBezet[breedte, hoogte]); // tekenen van de geplaatste blokjes
             }
         }
 
-        // om de daadwerkelijke blokjes bovenop de achtergrond te tekenen, aan de hand van de gridBezet waarin de kleuren opgeslagen staan
     }
 
 

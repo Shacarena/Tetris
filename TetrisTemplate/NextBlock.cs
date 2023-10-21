@@ -10,6 +10,7 @@ namespace TetrisTemplate
     {
         List<TetrisBlock> blocksbag;
         Random random;
+        
 
 
         public NextBlock()
@@ -31,21 +32,15 @@ namespace TetrisTemplate
                 blocksbag.Add(new oshape());
                 blocksbag.Add(new tshape());
             }
-
-            for (int i = 0; i < blocksbag.Count; i++)
-            {
-                int b = random.Next(i, blocksbag.Count);
-                (blocksbag[i], blocksbag[b]) = (blocksbag[b], blocksbag[b]);
-            }
         }
 
         public TetrisBlock NewNextBlock()
         {
-            if (blocksbag.Count == 0)
-                ResetBag();
+            if (blocksbag.Count == 0) ResetBag();
 
-            TetrisBlock nextBlock = blocksbag[0];
-            blocksbag.RemoveAt(0);
+            int randomnumb = random.Next(blocksbag.Count);
+            TetrisBlock nextBlock = blocksbag[randomnumb];
+            blocksbag.RemoveAt(randomnumb);
 
             return nextBlock;
         }
