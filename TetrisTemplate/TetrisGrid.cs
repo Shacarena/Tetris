@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.ComponentModel.Design;
 using TetrisTemplate;
 
 class TetrisGrid
@@ -43,6 +44,54 @@ class TetrisGrid
                 if (currentblock.shape[col, row]) grid[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.shape[col, row];
             }
         }
+    }
+
+    public bool IsRijVol(int rij)
+    {
+        for (int i = 0; i < Width; i++)
+        {
+            if (gridBezet[i, rij] != Color.Transparent)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void RijLeegmaken(int rij)
+    {
+        for (int i = 0; i < Width; i++)
+        {
+            gridBezet[i, rij] = Color.Transparent;
+        }
+    }
+
+    private void RijOmlaag(int a, int leeg)
+    {
+        for (int i = 0; i < Width; i++)
+        {
+            gridBezet[a, i + leeg] = gridBezet[a, i];
+            gridBezet[a, i] = Color.Transparent;
+        }
+    }
+
+    public int GridLegen()
+    {
+        int leeg = 0;
+
+        for (int rij = Height - 1; rij >= 0; rij--)
+        {
+            if (IsRijVol(rij));
+            {
+                RijLeegmaken(rij);
+                leeg++;
+            }
+            if (leeg > 0)
+            {
+                RijOmlaag(rij, leeg);
+            }
+        }
+        return leeg;
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

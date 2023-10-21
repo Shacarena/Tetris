@@ -59,7 +59,7 @@ abstract class TetrisBlock
     }
     public void Update(GameTime gameTime, TetrisGrid grid)
     {
-        
+
     }
 
 
