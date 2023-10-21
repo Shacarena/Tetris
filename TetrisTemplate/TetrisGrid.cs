@@ -6,6 +6,7 @@ class TetrisGrid
 {
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
+    SpriteFont font;
 
     /// The position at which this TetrisGrid should be drawn.
     Vector2 position;
@@ -14,7 +15,7 @@ class TetrisGrid
 
     /// The number of grid elements in the x-direction.
     public int Width { get { return 10; } }
-   
+
     /// The number of grid elements in the y-direction.
     public int Height { get { return 20; } }
 
@@ -22,17 +23,16 @@ class TetrisGrid
     public Color[,] gridBezet;
     public bool[,] grid;
 
+    
 
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
+        font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         position = Vector2.Zero;
         gridBezet = new Color[Width, Height];
         grid = new bool[Width, Height];
-        
-        Clear();
     }
-
     public void AddToGrid(TetrisBlock currentblock)
     {
         for (int col = 0; col < currentblock.shape.GetLength(0); col++) // loop through shape
@@ -40,7 +40,7 @@ class TetrisGrid
             for (int row = 0; row < currentblock.shape.GetLength(1); row++)
             {
                 if (currentblock.shape[col, row]) gridBezet[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.color;
-                if (currentblock.shape[col, row]) grid[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.shape[col, row] ;
+                if (currentblock.shape[col, row]) grid[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.shape[col, row];
             }
         }
     }
@@ -57,11 +57,7 @@ class TetrisGrid
             }
         }
 
-    }
-
-
-    public void Clear()
-    {
+        spriteBatch.DrawString(font, "Next block:", new Vector2(390, 20), Color.Black);
     }
 }
 

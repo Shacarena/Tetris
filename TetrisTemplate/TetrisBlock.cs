@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using TetrisTemplate;
 
 abstract class TetrisBlock
 {
@@ -42,7 +43,6 @@ abstract class TetrisBlock
         }
     }
 
-
     public void RotateCounterClockwise()
     {
         for (int row = 0; row < shape.GetLength(1) / 2; row++)
@@ -76,6 +76,19 @@ abstract class TetrisBlock
             }
         }
     }
+    public void DrawNext(GameTime gameTime, SpriteBatch spriteBatch)
+    {
+        for (int breedte = 0; breedte < shape.GetLength(0); breedte++) // voor de volledige breedte een achtergrond-blokje op de grid tekenen
+        {
+            for (int hoogte = 0; hoogte < shape.GetLength(1); hoogte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
+            {
+                if (shape[breedte, hoogte] == true)
+                {
+                    spriteBatch.Draw(block, new Rectangle((position.X + breedte + 9) * block.Width, (position.Y + hoogte + 3) * block.Height, block.Width, block.Height), color); // tekenen van de shape met de juiste kleur
+                }
+            }
+        }
+    }
 
     private List<TouchSide> GetTouchSides()
     {
@@ -105,12 +118,9 @@ abstract class TetrisBlock
         Right,
         Down
     }
-
-
     public void Reset(TetrisGrid grid)
     {
         this.grid = grid;
-
     }
 
     public bool Down()

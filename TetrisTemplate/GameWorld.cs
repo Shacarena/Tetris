@@ -3,7 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using TetrisTemplate;
-
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Drawing;
 
 class GameWorld
 {
@@ -49,10 +53,16 @@ class GameWorld
         if (inputHelper.KeyPressed(Keys.F)) { grid.AddToGrid(currentblock); Reset(); }
     }
 
+    public void Reset()
+    {
+        currentblock = newrandomblock.NewNextBlock();
+        nextblock = newrandomblock.NewNextBlock();
+        currentblock.Reset(grid);
+    }
+
     public void Update(GameTime gameTime)
     {
         
-        currentblock.Update(gameTime, grid); // not sure met deze
         for (int breedte = 0; breedte < currentblock.shape.GetLength(0); breedte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
         {
             for (int hoogte = 0; hoogte < currentblock.shape.GetLength(1); hoogte++) // voor de volledige breedte een achtergrond-blokje op de grid tekenen
@@ -73,15 +83,8 @@ class GameWorld
         spriteBatch.Begin();
         grid.Draw(gameTime, spriteBatch);
         currentblock.Draw(gameTime, spriteBatch);
-
+        nextblock.DrawNext(gameTime, spriteBatch);
         spriteBatch.End();
-    }
-
-    public void Reset()
-    {
-        currentblock = newrandomblock.NewNextBlock();
-        nextblock = newrandomblock.NewNextBlock();
-        currentblock.Reset(grid);
     }
 
 }
