@@ -10,20 +10,13 @@ class TetrisGame : Game
     InputHelper inputHelper;
     public GameWorld gameWorld;
     Texture2D block;
-    Song theme;
-    Song rijleeg;
-    Song levelup;
+    Song theme, rijleeg, levelup;
     public GameWorld gameworld { get { return gameWorld; } }
 
-    /// <summary>
-    /// A static reference to the ContentManager object, used for loading assets.
-    /// </summary>
     public static ContentManager ContentManager { get; private set; }
     
 
-    /// <summary>
-    /// A static reference to the width and height of the screen.
-    /// </summary>
+  
     public static Point ScreenSize { get; private set; }
 
     [STAThread]
@@ -67,6 +60,7 @@ class TetrisGame : Game
         rijleeg = Content.Load<Song>("rijleeg");
         levelup = Content.Load<Song>("levelup");
         MediaPlayer.Play(theme);
+        MediaPlayer.IsRepeating = true;
     }
 
     protected override void Update(GameTime gameTime) // alles updaten uit alle classes
