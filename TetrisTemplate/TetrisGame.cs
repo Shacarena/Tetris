@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 
 class TetrisGame : Game
 {
@@ -9,6 +10,7 @@ class TetrisGame : Game
     InputHelper inputHelper;
     GameWorld gameWorld;
     Texture2D block;
+    Song theme;
     public GameWorld gameworld { get { return gameWorld; } }
 
     /// <summary>
@@ -58,6 +60,9 @@ class TetrisGame : Game
         gameWorld = new GameWorld();
         gameWorld.Reset();
         block = ContentManager.Load<Texture2D>("block");
+        theme = Content.Load<Song>("theme");
+        MediaPlayer.Play(theme);
+        MediaPlayer.IsRepeating = true;
     }
 
     protected override void Update(GameTime gameTime)
@@ -71,6 +76,7 @@ class TetrisGame : Game
     {
         GraphicsDevice.Clear(Color.Gray);
         gameWorld.Draw(gameTime, spriteBatch);
+        
         // om zo meteen de juiste blokken te kunnen tekenen
 
 
