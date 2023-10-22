@@ -50,12 +50,12 @@ class TetrisGrid
     {
         for (int i = 0; i < Width; i++)
         {
-            if (gridBezet[i, rij] != Color.Transparent && grid[i, rij] == true)
+            if (grid[i, rij] == false)
             {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public void RijLeegmaken(int rij)
