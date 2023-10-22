@@ -8,7 +8,7 @@ class TetrisGame : Game
 {
     SpriteBatch spriteBatch;
     InputHelper inputHelper;
-    GameWorld gameWorld;
+    public GameWorld gameWorld;
     Texture2D block;
     Song theme;
     public GameWorld gameworld { get { return gameWorld; } }
@@ -61,7 +61,7 @@ class TetrisGame : Game
         gameWorld.Reset();
         block = ContentManager.Load<Texture2D>("block");
         theme = Content.Load<Song>("theme");
-        // MediaPlayer.Play(theme);
+        //MediaPlayer.Play(theme);
         MediaPlayer.IsRepeating = true;
     }
 

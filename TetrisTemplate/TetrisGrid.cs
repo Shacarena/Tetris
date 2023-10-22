@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.ComponentModel.Design;
+using System.Threading;
 using TetrisTemplate;
 
 class TetrisGrid
@@ -11,7 +12,7 @@ class TetrisGrid
 
     /// The position at which this TetrisGrid should be drawn.
     Vector2 position;
-
+    public int level, points, multiplier;
 
 
     /// The number of grid elements in the x-direction.
@@ -33,6 +34,8 @@ class TetrisGrid
         position = Vector2.Zero;
         gridBezet = new Color[Width, Height];
         grid = new bool[Width, Height];
+        level = 0;
+        points = 0;
     }
 
     public void AddToGrid(TetrisBlock currentblock)
@@ -73,7 +76,7 @@ class TetrisGrid
 
     private void RijOmlaag(int rij, int omlaag) // om rijden naar beneden te plaatsen
     {
-        for (int x = 0; x < Width; x++) // over de hele rij heen loopen
+        for (int x = 0; x < Width - 5; x++) // over de hele rij heen loopen
         {
             grid[x, rij + omlaag] = grid[x, rij]; // alle blokjes genoeg omlaag zetten
             gridBezet[x, rij + omlaag] = gridBezet[x, rij];
@@ -91,8 +94,12 @@ class TetrisGrid
             {
                 RijLeegmaken(rij); // rij leegmaken
                 leeg++; // GridLegen laten weten dat de rest een rij omlaag moet
+                multiplier++;
+                
             }
         }
+
+        points += 2 * multiplier;
 
         for (int rij = Height - 1; rij >= 0; rij--) // over de hele hoogte van de grid loopen
         {
@@ -117,8 +124,8 @@ class TetrisGrid
         }
 
         spriteBatch.DrawString(font, "Next block:", new Vector2(390, 20), Color.Black);
-        spriteBatch.DrawString(font, "Level: 1", new Vector2(390, 40), Color.Black);
-        spriteBatch.DrawString(font, "Points: ????", new Vector2(390, 60), Color.Black);
+        spriteBatch.DrawString(font, "Level: " + level, new Vector2(390, 40), Color.Black);
+        spriteBatch.DrawString(font, "Points: " + points, new Vector2(390, 60), Color.Black);
     }
 
     public void GridReset()

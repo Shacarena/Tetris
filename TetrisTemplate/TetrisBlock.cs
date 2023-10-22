@@ -128,6 +128,7 @@ abstract class TetrisBlock
         if (GetTouchSides().Contains(TouchSide.Down))
         {
             grid.AddToGrid(this);
+            
             return false;
         }
         position.Y += 1;

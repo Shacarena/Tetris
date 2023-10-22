@@ -33,6 +33,8 @@ class GameWorld
     /// </summary>
     public TetrisGrid grid;
     TetrisBlock currentblock, nextblock;
+    public long lastupdate;
+    public long timer = (long)0.2;
     
 
     public GameWorld()
@@ -72,6 +74,7 @@ class GameWorld
     {
         currentblock = newrandomblock.NewNextBlock();
         nextblock = newrandomblock.NewNextBlock();
+        lastupdate = (int)DateTimeOffset.Now.ToUnixTimeSeconds();
         currentblock.Reset(grid);
     }
     public void Reset2()
@@ -83,17 +86,17 @@ class GameWorld
     public void Update(GameTime gameTime)
     {
         
-        for (int breedte = 0; breedte < currentblock.shape.GetLength(0); breedte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
+        if (grid.points > 0 && grid.points % 10 == 0)
         {
-            for (int hoogte = 0; hoogte < currentblock.shape.GetLength(1); hoogte++) // voor de volledige breedte een achtergrond-blokje op de grid tekenen
-            {
-                if (grid.grid[breedte, hoogte + 1] == true)
-                {
-                    grid.AddToGrid(currentblock);
-                    Reset();
+            grid.level++;
+            if (timer > 0.2) timer -= (long)0.2;
+        }
 
-                }
-            }
+        if (DateTimeOffset.Now.ToUnixTimeSeconds() - lastupdate > timer)
+        {
+            lastupdate = DateTimeOffset.Now.ToUnixTimeSeconds(); 
+            bool wentdown = currentblock.Down(); 
+            if (!wentdown) Reset2();
         }
 
         grid.GridLegen();
@@ -105,7 +108,6 @@ class GameWorld
 
         if (_gameState == GameState.Playing)
         {
-            
             grid.Draw(gameTime, spriteBatch);
             currentblock.Draw(gameTime, spriteBatch);
             nextblock.DrawNext(gameTime, spriteBatch);
