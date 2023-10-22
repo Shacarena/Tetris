@@ -9,6 +9,8 @@ class TetrisGrid
 {
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
+
+    // andere fonts en nummers
     SpriteFont font;
     Song theme;
     Song rijleeg;
@@ -18,7 +20,6 @@ class TetrisGrid
     Vector2 position;
     public int level, points, multiplier;
 
-
     /// The number of grid elements in the x-direction.
     public int Width { get { return 10; } }
 
@@ -27,13 +28,13 @@ class TetrisGrid
 
     // Grid om te bepalen welke kleuren waar getekend moeten worden
     public Color[,] gridBezet;
-    public bool[,] grid;
-
-
-
+    public bool[,] grid; // true en false grid
 
     public TetrisGrid()
     {
+        // alles inladen
+        // de soundeffects komen van deze website
+        // https://www.myinstants.com/nl/search/?name=tetris
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         theme = TetrisGame.ContentManager.Load<Song>("theme");
@@ -46,25 +47,25 @@ class TetrisGrid
         points = 0;
     }
 
-    public void AddToGrid(TetrisBlock currentblock)
+    public void AddToGrid(TetrisBlock currentblock) // blok aan grid toevoegen
     {
-        for (int col = 0; col < currentblock.shape.GetLength(0); col++) // loop through shape
+        for (int col = 0; col < currentblock.shape.GetLength(0); col++) // loop door de shape
         {
-            for (int row = 0; row < currentblock.shape.GetLength(1); row++)
+            for (int row = 0; row < currentblock.shape.GetLength(1); row++) // loop door de shape
             {
-                if (currentblock.shape[col, row]) gridBezet[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.color;
-                if (currentblock.shape[col, row]) grid[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.shape[col, row];
+                if (currentblock.shape[col, row]) gridBezet[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.color; // huidige vorm in de color grid zetten
+                if (currentblock.shape[col, row]) grid[currentblock.position.X + col, currentblock.position.Y + row] = currentblock.shape[col, row]; // huidige vorm in de grid zetten
             }
         }
     }
 
-    public bool gameover()
+    public bool gameover() // kijken of je gameover bent
     {
-        for (int i = 0; i < Width; i++)
+        for (int i = 0; i < Width; i++) // kijken naar de hele bovenste rij
         {
-            if (grid[i, 0]) return true;
+            if (grid[i, 0]) return true; // kijken of er blokken op de bovenste rij staan
         }
-        return false;
+        return false; // wanneer er geen blokken op de bovenste rij staan
     }
 
     public bool IsRijVol(int rij) // kijken of een rij helemaal vol is
@@ -81,23 +82,24 @@ class TetrisGrid
 
     public void RijLeegmaken(int rij) // method om een rij leeg te maken
     {
-       
         for (int i = 0; i < Width; i++) // over de hele rij heen loopen
         {
             gridBezet[i, rij] = Color.Transparent; // kleurgrid op transparant zetten
             grid[i, rij] = false; // bezet-grid op false
-            MediaPlayer.Play(rijleeg);
+            MediaPlayer.Play(rijleeg); // geluidseffectje afspelen
         }
-       
     }
 
     private void RijOmlaag(int rij, int omlaag) // om rijden naar beneden te plaatsen
     {
-        for (int x = 0; x < Width; x++) // over de hele rij heen loopen
+        for (int r = rij; r < Height; r--)
         {
-            grid[x, rij + omlaag] = grid[x, rij]; // alle blokjes genoeg omlaag zetten
-            grid[x, rij] = false;
-            gridBezet[x, rij] = Color.Transparent;      
+            for (int x = 0; x < Width; x++) // over de hele rij heen loopen
+            {
+                grid[x, r - omlaag] = grid[x, r]; // alle blokjes genoeg omlaag zetten
+                grid[x, r] = false; // rij leeghalen in grid
+                gridBezet[x, r] = Color.Transparent; // rij leeghalen in kleurengrid
+            }
         }
     }
     public int GridLegen() // kijken of rijen vol zijn, omlaag moeten, etc
@@ -110,21 +112,17 @@ class TetrisGrid
             if (IsRijVol(rij))// checken of een rij leeg gemaakt moet worden, zo ja;
             {
                 RijLeegmaken(rij); // rij leegmaken
-                omlaag++; // GridLegen laten weten dat de rest een rij omlaag moet
+                omlaag++; // programma laten weten dat de rijen erboven een extra rij omlaag moeten
                 multiplier++;
                 
             }
-            else if (omlaag > 0)
+            else if (omlaag > 1) // checken of er iets omlaag moet
             {
-                RijOmlaag(rij, omlaag);
+                RijOmlaag(rij, omlaag); // rijen omlaag plaatsen
             }
         }
-        points += 2 * multiplier;
-        return omlaag;
-
-        
-
-        
+        points += 2 * multiplier; // punten erbij
+        return omlaag; // opnieuw beginnen
     }
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
@@ -138,12 +136,13 @@ class TetrisGrid
             }
         }
 
+        // voor de stand van het spel
         spriteBatch.DrawString(font, "Next block:", new Vector2(390, 20), Color.Black);
         spriteBatch.DrawString(font, "Level: " + level, new Vector2(390, 40), Color.Black);
         spriteBatch.DrawString(font, "Points: " + points, new Vector2(390, 60), Color.Black);
     }
 
-    public void GridReset()
+    public void GridReset() // om de grid helemaal leeg te halen
     {
         for (int hoogte = 0; hoogte < Height; hoogte++)
         {
@@ -154,7 +153,7 @@ class TetrisGrid
             }
         }
     }
-    public void DrawGameOver(GameTime gameTime, SpriteBatch spriteBatch)
+    public void DrawGameOver(GameTime gameTime, SpriteBatch spriteBatch) // tekenen van de gameover state
     {
         spriteBatch.DrawString(font, "GAME OVER", new Vector2(330, 250), Color.Red);
         spriteBatch.DrawString(font, "Press space to start a new game", new Vector2(250, 280), Color.Black);

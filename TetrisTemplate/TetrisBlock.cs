@@ -9,8 +9,8 @@ using TetrisTemplate;
 
 abstract class TetrisBlock
 {
+    // alles definieren
     Texture2D block;
-    
     public Color color;
     public bool[,] shape;
     public float Width { get; }
@@ -21,33 +21,29 @@ abstract class TetrisBlock
     public Point position = new Point(4, 0);
     TetrisGrid grid;
 
-
-
-
     protected TetrisBlock() 
     {
-        block = TetrisGame.ContentManager.Load<Texture2D>("block");
+        block = TetrisGame.ContentManager.Load<Texture2D>("block"); // sprite inladen
     }
     
-    public void RotateClockwise() // draait het blok, hiervan moeten de GetLengths nog even aangepast worden naar de juiste 0 of 1
+    public void RotateClockwise() // draait het blok volgens de regels voor matrices roteren, GetLength 0 of 1 maakt niet uit want alle blokken zijn vierkant
     {
-        if (position.X + shape.GetLength(0) < grid.Width + 1 && position.X > -1)
+        if (position.X + shape.GetLength(0) < grid.Width + 1 && position.X > -1) // kijken of blok mag draaien
         {
-            for (int row = 0; row < shape.GetLength(0) / 2; row++) // buitenste loop voor roteren
+            for (int row = 0; row < shape.GetLength(0) / 2; row++) // buitenste loop voor roteren (breedte)
             {
-                for (int col = row; col < shape.GetLength(0) - row - 1; col++) // binnenste loop voor roteren
+                for (int col = row; col < shape.GetLength(0) - row - 1; col++) // binnenste loop voor roteren (hoogte)
                 {
                     bool tijdelijk = shape[row, col]; // een tijdelijke 2d array maken om de nieuwe waardes op te slaap
                     shape[row, col] = shape[shape.GetLength(0) - 1 - col, row]; // 'swappen' volgens de regels voor matrices
                     shape[shape.GetLength(0) - 1 - col, row] = shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col];
                     shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col] = shape[col, shape.GetLength(0) - 1 - row];
-                    shape[col, shape.GetLength(0) - 1 - row] = tijdelijk;
+                    shape[col, shape.GetLength(0) - 1 - row] = tijdelijk; // nieuwe vorm teruggeven
                 }
             }
         }
     }
-
-    public void RotateCounterClockwise()
+    public void RotateCounterClockwise() // zelfde ongein als hierboven maar dan andersom
     {
         if (position.X + shape.GetLength(0) < grid.Width + 1 && position.X > -1)
         {
@@ -63,18 +59,14 @@ abstract class TetrisBlock
                 }
             }
         }
-        
     }
-   
-
-
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        for (int breedte = 0; breedte < shape.GetLength(0); breedte++) // voor de volledige breedte een achtergrond-blokje op de grid tekenen
+        for (int breedte = 0; breedte < shape.GetLength(0); breedte++) // over de breedte loopen
         {
-            for (int hoogte = 0; hoogte < shape.GetLength(1); hoogte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
+            for (int hoogte = 0; hoogte < shape.GetLength(1); hoogte++) // over de hoogte loopen
             {
-                if (shape[breedte, hoogte] == true)
+                if (shape[breedte, hoogte] == true) // checken of blok getekend moet worden
                 {
                     spriteBatch.Draw(block, new Rectangle((position.X + breedte ) * block.Width, (position.Y + hoogte) * block.Height, block.Width, block.Height), color); // tekenen van de shape met de juiste kleur
                 }
@@ -83,11 +75,11 @@ abstract class TetrisBlock
     }
     public void DrawNext(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        for (int breedte = 0; breedte < shape.GetLength(0); breedte++) // voor de volledige breedte een achtergrond-blokje op de grid tekenen
+        for (int breedte = 0; breedte < shape.GetLength(0); breedte++) // over de breedte loopen
         {
-            for (int hoogte = 0; hoogte < shape.GetLength(1); hoogte++) // voor de volledige hoogte een achtergrond-blokje op de grid tekenen
+            for (int hoogte = 0; hoogte < shape.GetLength(1); hoogte++) // over de hoogte loopen
             {
-                if (shape[breedte, hoogte] == true)
+                if (shape[breedte, hoogte] == true) // checken of blok getekend moet worden
                 {
                     spriteBatch.Draw(block, new Rectangle((position.X + breedte + 9) * block.Width, (position.Y + hoogte + 3) * block.Height, block.Width, block.Height), color); // tekenen van de shape met de juiste kleur
                 }
@@ -95,80 +87,79 @@ abstract class TetrisBlock
         }
     }
 
-    private List<TouchSide> GetTouchSides()
+    private List<Zijkanten> MagBewegen()
     {
-        List<TouchSide> touchSides = new List<TouchSide>(); // we return this list in the end
+        List<Zijkanten> Bewegen = new List<Zijkanten>(); // lijst aanmaken om alles in te plaatsen
         bool[,] colorGrid = grid.grid;
-        for (int col = 0; col < shape.GetLength(0); col++) // loop through shape
+        for (int col = 0; col < shape.GetLength(0); col++) // door de shape heen loopen
         {
-            for (int row = 0; row < shape.GetLength(1); row++)
+            for (int row = 0; row < shape.GetLength(1); row++) // door de shape heen loopen
             {
-                if (!shape[col, row]) continue;
+                if (!shape[col, row]) continue; // kijken of de shape op dit punt getekend moet worden
 
-                var (x, y) = (position.X + col, position.Y + row);
-                bool left = (x == 0) ? true : colorGrid[x - 1, y]; // if x is 0 then we cant move to the left so we assign a color to 'left' so that TouchSide.Left will be added to touchSides
-                bool right = (x == grid.Width - 1) ? true : colorGrid[x + 1, y]; // idem 
-                bool down = (y == grid.Height - 1) ? true : colorGrid[x, y + 1]; // idem
+                var (x, y) = (position.X + col, position.Y + row); 
+                bool left = (x == 0) ? true : colorGrid[x - 1, y]; // kan niet naar links bewegen, een kleur geven zodat deze toegevoegd kan worden aan de lijst
+                bool right = (x == grid.Width - 1) ? true : colorGrid[x + 1, y]; // zelfde
+                bool down = (y == grid.Height - 1) ? true : colorGrid[x, y + 1]; // zelfde
 
-                if (left != false) { touchSides.Add(TouchSide.Left); }
-                if (right != false) { touchSides.Add(TouchSide.Right); }
-                if (down != false) { touchSides.Add(TouchSide.Down); }
+                if (left != false) { Bewegen.Add(Zijkanten.Left); } // toevoegen aan de lijst wanneer het niet past
+                if (right != false) { Bewegen.Add(Zijkanten.Right); }
+                if (down != false) { Bewegen.Add(Zijkanten.Down); }
             }
         }
-        return touchSides;
+        return Bewegen; // lijst teruggeven
     }
-    enum TouchSide
+    enum Zijkanten // om te bepalen welke opties het blok niet heen kan
     {
         Left,
         Right,
         Down
     }
-    public void Reset(TetrisGrid grid)
+    public void Reset(TetrisGrid grid) // om het grid te resetten
     {
         this.grid = grid;
     }
-    public void placedown()
+    public void Omlaag() // om blok in 1x omlaag te plaatsen
     {
         while (Down()) ;
     }
     
-    public bool Down()
+    public bool Down() // om blok omlaag te plaatsen
     {
-        if (GetTouchSides().Contains(TouchSide.Down))
+        if (MagBewegen().Contains(Zijkanten.Down)) // kijken of blok omlaag mag bewegen
         {
-            grid.AddToGrid(this);
-            
+            grid.AddToGrid(this); // toevoegen aan grid
             return false;
         }
-        position.Y += 1;
+        position.Y += 1; // blok omlaag bewegen wanneer het mag
         return true;
     }
 
-    public bool Left()
+    public bool Left() // blok naar links plaatsen
     {
-        if (GetTouchSides().Contains(TouchSide.Left)) return false;
-        position.X -= 1;
-
+        if (MagBewegen().Contains(Zijkanten.Left)) return false; // kijken of blok naar links mag bewegen
+        position.X -= 1; // blok naar links bewegen
         return true;
     }
 
-    public bool Right()
+    public bool Right() // blok naar rechts plaatsen
     {
-        if (GetTouchSides().Contains(TouchSide.Right)) return false;
-        position.X += 1;
-
+        if (MagBewegen().Contains(Zijkanten.Right)) return false; // kijken of blik naar rechts plaatsen
+        position.X += 1; // blok naar rechts plaatsen
         return true;
     }
 }
 
-class tshape : TetrisBlock
+class tshape : TetrisBlock // alle subclasses voor alle blokken
 {
         public tshape()
         {
-            color = Color.Purple;
-            shape = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } };
+            color = Color.Purple; // kleur van het blok
+            shape = new bool[3, 3] { { true, true, true }, { false, true, false }, { false, false, false } }; // standaardvorm van het blok
         }
 }
+
+// voor deze allemaal hetzelfde als hierboven
 
 class lshape : TetrisBlock
 {

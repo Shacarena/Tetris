@@ -14,14 +14,14 @@ using System.Reflection.Metadata;
 
 class GameWorld
 {
-    private GameState _gameState = GameState.Playing;
-    enum GameState
+    private GameState _gameState = GameState.Playing; // beginnen met een spel
+    enum GameState // namen van alle gamestates
     {
         Playing,
         GameOver
     }
 
-
+    // variabelen definieren
     public static Random Random { get { return random; } }
     static Random random;
     NextBlock newrandomblock;
@@ -29,9 +29,7 @@ class GameWorld
     Song theme;
     Song rijleeg;
     Song levelup;
-
     SpriteFont font;
-
     GameState gameState;
 
     /// <summary>
@@ -47,23 +45,23 @@ class GameWorld
     {
         random = new Random();
         gameState = GameState.Playing;
-        font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
+        font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont"); // font laden
         grid = new TetrisGrid();
         newrandomblock = new NextBlock();
-        theme = TetrisGame.ContentManager.Load<Song>("theme");
+        theme = TetrisGame.ContentManager.Load<Song>("theme"); // geluiden laden
         rijleeg = TetrisGame.ContentManager.Load<Song>("rijleeg");
         levelup = TetrisGame.ContentManager.Load<Song>("levelup");
         gameover = false;
     }
 
-    public void HandleInput(GameTime gameTime, InputHelper inputHelper)
+    public void HandleInput(GameTime gameTime, InputHelper inputHelper) // alle input die nodig is
     {
-        if (inputHelper.KeyPressed(Keys.Down) && currentblock.position.Y + currentblock.shape.GetLength(1) < grid.Height) { currentblock.Down(); }
-        if (inputHelper.KeyPressed(Keys.Left)) { currentblock.Left(); }
-        if (inputHelper.KeyPressed(Keys.Space)) { currentblock.placedown(); }
-        if (inputHelper.KeyPressed(Keys.Right)) { currentblock.Right(); }
-        if (inputHelper.KeyPressed(Keys.D)) { currentblock.RotateClockwise(); }
-        if (inputHelper.KeyPressed(Keys.A)) { currentblock.RotateCounterClockwise(); }
+        if (inputHelper.KeyPressed(Keys.Down) && currentblock.position.Y + currentblock.shape.GetLength(1) < grid.Height) { currentblock.Down(); } // om blok omlaag te bewegen
+        if (inputHelper.KeyPressed(Keys.Left)) { currentblock.Left(); } // blok opzij
+        if (inputHelper.KeyPressed(Keys.Space)) { currentblock.Omlaag(); } // direct naar beneden
+        if (inputHelper.KeyPressed(Keys.Right)) { currentblock.Right(); } // blok opzij
+        if (inputHelper.KeyPressed(Keys.D)) { currentblock.RotateClockwise(); } // blok roteren
+        if (inputHelper.KeyPressed(Keys.A)) { currentblock.RotateCounterClockwise(); } // blok roteren
 
         if (_gameState == GameState.GameOver) // zorgen dat het alleen kan wanneer je GameOver bent
         {
@@ -73,18 +71,15 @@ class GameWorld
                 Reset();
             }
         }
-
-        
     }
-
-    public void Reset()
+    public void Reset() // resetten aan het begin
     {
         currentblock = newrandomblock.NewNextBlock();
         nextblock = newrandomblock.NewNextBlock();
         lastupdate = (int)DateTimeOffset.Now.ToUnixTimeSeconds();
         currentblock.Reset(grid);
     }
-    public void Reset2()
+    public void Reset2() // resetten voor later in de game
     {
         currentblock = nextblock;
         nextblock = newrandomblock.NewNextBlock();
@@ -93,45 +88,40 @@ class GameWorld
     public void Update(GameTime gameTime)
     {
         
-        if (grid.points > 0 && grid.points % 10 == 0)
+        if (grid.points > 0 && grid.points % 10 == 0) // levelup 
         {
-            grid.level++;
-            if (timer > 0.2) timer -= (long)0.2;
-            MediaPlayer.Play(levelup);
+            grid.level++; // level omhoog
+            if (timer > 0.2) timer -= (long)0.2; // maakt blok sneller
+            MediaPlayer.Play(levelup); // soundeffect levelup
         }
 
-        if (DateTimeOffset.Now.ToUnixTimeSeconds() - lastupdate > timer)
+        if (DateTimeOffset.Now.ToUnixTimeSeconds() - lastupdate > timer) // timer
         {
-            lastupdate = DateTimeOffset.Now.ToUnixTimeSeconds(); 
-            bool wentdown = currentblock.Down(); 
-            if (!wentdown) Reset2();
+            lastupdate = DateTimeOffset.Now.ToUnixTimeSeconds(); // kijken wanneer laatste timerupdate was
+            bool wentdown = currentblock.Down(); // kijken of blok omlaag is gegaan
+            if (!wentdown) Reset2(); // nieuw blok spawnen als blok omlaag is geplaatst
         }
 
+        grid.GridLegen(); // om te checken of er iets in de grid moet gebeuren
+        if (grid.gameover()) _gameState = GameState.GameOver; // naar gameover state
         
-
-        if (grid.gameover()) _gameState = GameState.GameOver;
-        
-        
-
-        grid.GridLegen();
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
 
-        if (_gameState == GameState.Playing)
+        if (_gameState == GameState.Playing) // om de juiste gamestate te tekenen
         {
-            grid.Draw(gameTime, spriteBatch);
-            currentblock.Draw(gameTime, spriteBatch);
-            nextblock.DrawNext(gameTime, spriteBatch);
+            grid.Draw(gameTime, spriteBatch); // grid tekenen
+            currentblock.Draw(gameTime, spriteBatch); // huidige blok over de grid tekenen
+            nextblock.DrawNext(gameTime, spriteBatch); // volgende blok aan de zijkant tekenen
         }
 
-        if (_gameState == GameState.GameOver)
+        if (_gameState == GameState.GameOver) // voor de gameover tekenen
         {
-            grid.DrawGameOver(gameTime, spriteBatch);   
+            grid.DrawGameOver(gameTime, spriteBatch);  // tekent de gameover strings
         }
-        
         spriteBatch.End();
     }
 

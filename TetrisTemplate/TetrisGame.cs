@@ -61,6 +61,7 @@ class TetrisGame : Game
         // create and reset the game world
         gameWorld = new GameWorld();
         gameWorld.Reset();
+        // laden van alle content die nodig is en themesong afspelen
         block = ContentManager.Load<Texture2D>("block");
         theme = Content.Load<Song>("theme");
         rijleeg = Content.Load<Song>("rijleeg");
@@ -68,23 +69,17 @@ class TetrisGame : Game
         MediaPlayer.Play(theme);
     }
 
-    protected override void Update(GameTime gameTime)
+    protected override void Update(GameTime gameTime) // alles updaten uit alle classes
     {
         inputHelper.Update(gameTime);
         gameWorld.HandleInput(gameTime, inputHelper);
         gameWorld.Update(gameTime);     
     }
 
-    protected override void Draw(GameTime gameTime)
+    protected override void Draw(GameTime gameTime) // tekenen van de gameworld en achtergrondkleur
     {
         GraphicsDevice.Clear(Color.Gray);
         gameWorld.Draw(gameTime, spriteBatch);
-        
-        // om zo meteen de juiste blokken te kunnen tekenen
-
-
-
-
     }
 }
 
