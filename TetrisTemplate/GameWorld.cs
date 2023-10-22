@@ -8,10 +8,11 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Threading.Tasks.Dataflow;
 
 class GameWorld
 {
-
+    private GameState _gameState = GameState.GameOver;
     enum GameState
     {
         Playing,
@@ -51,6 +52,16 @@ class GameWorld
         if (inputHelper.KeyPressed(Keys.D)) { currentblock.RotateClockwise(); }
         if (inputHelper.KeyPressed(Keys.A)) { currentblock.RotateCounterClockwise(); }
         if (inputHelper.KeyPressed(Keys.F)) { grid.AddToGrid(currentblock); Reset2(); }
+
+        if (_gameState == GameState.GameOver)
+        {
+            if (inputHelper.KeyPressed(Keys.Space)) { _gameState = GameState.Playing; }
+        }
+
+        if (_gameState == GameState.Playing)
+        {
+            if (inputHelper.KeyPressed(Keys.Back)) { _gameState = GameState.GameOver; }
+        }
     }
 
     public void Reset()
@@ -88,9 +99,20 @@ class GameWorld
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.Begin();
-        grid.Draw(gameTime, spriteBatch);
-        currentblock.Draw(gameTime, spriteBatch);
-        nextblock.DrawNext(gameTime, spriteBatch);
+
+        if (_gameState == GameState.Playing)
+        {
+            
+            grid.Draw(gameTime, spriteBatch);
+            currentblock.Draw(gameTime, spriteBatch);
+            nextblock.DrawNext(gameTime, spriteBatch);
+        }
+
+        if (_gameState == GameState.GameOver)
+        {
+            grid.DrawGameOver(gameTime, spriteBatch);   
+        }
+        
         spriteBatch.End();
     }
 

@@ -118,5 +118,11 @@ class TetrisGrid
 
         spriteBatch.DrawString(font, "Next block:", new Vector2(390, 20), Color.Black);
     }
+
+    public void DrawGameOver(GameTime gameTime, SpriteBatch spriteBatch)
+    {
+        spriteBatch.DrawString(font, "GAME OVER", new Vector2(330, 250), Color.Red);
+        spriteBatch.DrawString(font, "Press space to start a new game", new Vector2(250, 280), Color.Black);
+    }
 }
 
