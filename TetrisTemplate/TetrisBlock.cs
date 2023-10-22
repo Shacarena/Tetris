@@ -23,6 +23,7 @@ abstract class TetrisBlock
 
 
 
+
     protected TetrisBlock() 
     {
         block = TetrisGame.ContentManager.Load<Texture2D>("block");
@@ -30,37 +31,41 @@ abstract class TetrisBlock
     
     public void RotateClockwise() // draait het blok, hiervan moeten de GetLengths nog even aangepast worden naar de juiste 0 of 1
     {
-        for (int row = 0; row < shape.GetLength(0) / 2; row++) // buitenste loop voor roteren
+        if (position.X + shape.GetLength(0) < grid.Width + 1 && position.X > -1)
         {
-            for (int col = row; col < shape.GetLength(0) - row - 1; col++) // binnenste loop voor roteren
+            for (int row = 0; row < shape.GetLength(0) / 2; row++) // buitenste loop voor roteren
             {
-                bool tijdelijk = shape[row, col]; // een tijdelijke 2d array maken om de nieuwe waardes op te slaap
-                shape[row, col] = shape[shape.GetLength(0) - 1 - col, row]; // 'swappen' volgens de regels voor matrices
-                shape[shape.GetLength(0) - 1 - col, row] = shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col];
-                shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col] = shape[col, shape.GetLength(0) - 1 - row];
-                shape[col, shape.GetLength(0) - 1 - row] = tijdelijk;
+                for (int col = row; col < shape.GetLength(0) - row - 1; col++) // binnenste loop voor roteren
+                {
+                    bool tijdelijk = shape[row, col]; // een tijdelijke 2d array maken om de nieuwe waardes op te slaap
+                    shape[row, col] = shape[shape.GetLength(0) - 1 - col, row]; // 'swappen' volgens de regels voor matrices
+                    shape[shape.GetLength(0) - 1 - col, row] = shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col];
+                    shape[shape.GetLength(0) - 1 - row, shape.GetLength(0) - 1 - col] = shape[col, shape.GetLength(0) - 1 - row];
+                    shape[col, shape.GetLength(0) - 1 - row] = tijdelijk;
+                }
             }
         }
     }
 
     public void RotateCounterClockwise()
     {
-        for (int row = 0; row < shape.GetLength(1) / 2; row++)
+        if (position.X + shape.GetLength(0) < grid.Width + 1 && position.X > -1)
         {
-            for (int col = row; col < shape.GetLength(0) - row - 1; col++)
+            for (int row = 0; row < shape.GetLength(1) / 2; row++)
             {
+                for (int col = row; col < shape.GetLength(0) - row - 1; col++)
+                {
                     bool tijdelijk = shape[row, col];
                     shape[row, col] = shape[col, shape.GetLength(1) - 1 - row];
                     shape[col, shape.GetLength(1) - 1 - row] = shape[shape.GetLength(1) - 1 - row, shape.GetLength(1) - 1 - col];
                     shape[shape.GetLength(1) - 1 - row, shape.GetLength(1) - 1 - col] = shape[shape.GetLength(1) - 1 - col, row];
                     shape[shape.GetLength(1) - 1 - col, row] = tijdelijk;
+                }
             }
         }
+        
     }
-    public void Update(GameTime gameTime, TetrisGrid grid)
-    {
-
-    }
+   
 
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -122,7 +127,11 @@ abstract class TetrisBlock
     {
         this.grid = grid;
     }
-
+    public void placedown()
+    {
+        while (Down()) ;
+    }
+    
     public bool Down()
     {
         if (GetTouchSides().Contains(TouchSide.Down))

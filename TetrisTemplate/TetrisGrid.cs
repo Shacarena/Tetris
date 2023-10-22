@@ -31,6 +31,7 @@ class TetrisGrid
 
 
 
+
     public TetrisGrid()
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
@@ -57,6 +58,15 @@ class TetrisGrid
         }
     }
 
+    public bool gameover()
+    {
+        for (int i = 0; i < Width; i++)
+        {
+            if (grid[i, 0]) return true;
+        }
+        return false;
+    }
+
     public bool IsRijVol(int rij) // kijken of een rij helemaal vol is
     {
         for (int i = 0; i < Width; i++) // over de hele breedte van de rij heen
@@ -71,53 +81,50 @@ class TetrisGrid
 
     public void RijLeegmaken(int rij) // method om een rij leeg te maken
     {
-        if (IsRijVol(rij)) // eerst checken of de rij daadwerkelijk helemaal vol is
+       
+        for (int i = 0; i < Width; i++) // over de hele rij heen loopen
         {
-            for (int i = 0; i < Width; i++) // over de hele rij heen loopen
-            {
-                gridBezet[i, rij] = Color.Transparent; // kleurgrid op transparant zetten
-                grid[i, rij] = false; // bezet-grid op false
-                MediaPlayer.Play(rijleeg);
-            }
+            gridBezet[i, rij] = Color.Transparent; // kleurgrid op transparant zetten
+            grid[i, rij] = false; // bezet-grid op false
+            MediaPlayer.Play(rijleeg);
         }
+       
     }
 
     private void RijOmlaag(int rij, int omlaag) // om rijden naar beneden te plaatsen
     {
-        for (int x = 0; x < Width - 5; x++) // over de hele rij heen loopen
+        for (int x = 0; x < Width; x++) // over de hele rij heen loopen
         {
             grid[x, rij + omlaag] = grid[x, rij]; // alle blokjes genoeg omlaag zetten
-            gridBezet[x, rij + omlaag] = gridBezet[x, rij];
-            grid[x, rij] = false; // oude rij leeghalen
-            gridBezet[x, rij] = Color.Transparent;
+            grid[x, rij] = false;
+            gridBezet[x, rij] = Color.Transparent;      
         }
     }
     public int GridLegen() // kijken of rijen vol zijn, omlaag moeten, etc
     {
-        int leeg = 0; // kijken hoeveel rijen naar beneden geplaatst moeten worden
+        int omlaag = 0; // kijken hoeveel rijen naar beneden geplaatst moeten worden
+        multiplier = 0;
 
         for (int rij = Height - 1; rij >= 0; rij--) // over de hele hoogte van het grid loopen om te kijken naar iedere rij
         {
-            if (IsRijVol(rij) == true)// checken of een rij leeg gemaakt moet worden, zo ja;
+            if (IsRijVol(rij))// checken of een rij leeg gemaakt moet worden, zo ja;
             {
                 RijLeegmaken(rij); // rij leegmaken
-                leeg++; // GridLegen laten weten dat de rest een rij omlaag moet
+                omlaag++; // GridLegen laten weten dat de rest een rij omlaag moet
                 multiplier++;
                 
             }
-        }
-
-        points += 2 * multiplier;
-
-        for (int rij = Height - 1; rij >= 0; rij--) // over de hele hoogte van de grid loopen
-        {
-            if (leeg > 0) // kijken of er rijen omlaag moeten
+            else if (omlaag > 0)
             {
-                RijOmlaag(rij, leeg); // rijen naar beneden plaatsen
+                RijOmlaag(rij, omlaag);
             }
         }
+        points += 2 * multiplier;
+        return omlaag;
 
-        return leeg;
+        
+
+        
     }
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {

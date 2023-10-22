@@ -13,12 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../../../../Music/rijleeg.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:../../../../../Music/rijleeg.mp3;rijleeg.mp3
-
 #begin block.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -36,6 +30,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:levelup.mp3
+
+#begin rijleeg.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:rijleeg.mp3
 
 #begin rijleeg.mp3
 /importer:Mp3Importer

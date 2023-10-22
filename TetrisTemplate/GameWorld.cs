@@ -41,7 +41,7 @@ class GameWorld
     TetrisBlock currentblock, nextblock;
     public long lastupdate;
     public long timer = (long)0.2;
-    
+    bool gameover;
 
     public GameWorld()
     {
@@ -53,16 +53,17 @@ class GameWorld
         theme = TetrisGame.ContentManager.Load<Song>("theme");
         rijleeg = TetrisGame.ContentManager.Load<Song>("rijleeg");
         levelup = TetrisGame.ContentManager.Load<Song>("levelup");
+        gameover = false;
     }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
         if (inputHelper.KeyPressed(Keys.Down) && currentblock.position.Y + currentblock.shape.GetLength(1) < grid.Height) { currentblock.Down(); }
         if (inputHelper.KeyPressed(Keys.Left)) { currentblock.Left(); }
+        if (inputHelper.KeyPressed(Keys.Space)) { currentblock.placedown(); }
         if (inputHelper.KeyPressed(Keys.Right)) { currentblock.Right(); }
         if (inputHelper.KeyPressed(Keys.D)) { currentblock.RotateClockwise(); }
         if (inputHelper.KeyPressed(Keys.A)) { currentblock.RotateCounterClockwise(); }
-        if (inputHelper.KeyPressed(Keys.F)) { grid.AddToGrid(currentblock); Reset2(); }
 
         if (_gameState == GameState.GameOver) // zorgen dat het alleen kan wanneer je GameOver bent
         {
@@ -73,10 +74,7 @@ class GameWorld
             }
         }
 
-        if (_gameState == GameState.Playing)
-        {
-            if (inputHelper.KeyPressed(Keys.Back)) { _gameState = GameState.GameOver; }
-        }
+        
     }
 
     public void Reset()
@@ -108,6 +106,12 @@ class GameWorld
             bool wentdown = currentblock.Down(); 
             if (!wentdown) Reset2();
         }
+
+        
+
+        if (grid.gameover()) _gameState = GameState.GameOver;
+        
+        
 
         grid.GridLegen();
     }
