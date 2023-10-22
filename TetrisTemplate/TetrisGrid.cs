@@ -50,47 +50,52 @@ class TetrisGrid
     {
         for (int i = 0; i < Width; i++)
         {
-            if (gridBezet[i, rij] != Color.Transparent)
+            if (gridBezet[i, rij] != Color.Transparent && grid[i, rij] == true)
             {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void RijLeegmaken(int rij)
     {
-        for (int i = 0; i < Width; i++)
+        if (IsRijVol(rij))
         {
-            gridBezet[i, rij] = Color.Transparent;
+            for (int i = 0; i < Width; i++)
+            {
+                gridBezet[i, rij] = Color.Transparent;
+                grid[i, rij] = false;
+            }
         }
     }
 
-    private void RijOmlaag(int a, int leeg)
-    {
-        for (int i = 0; i < Width; i++)
+    private void RijOmlaag(int a, int omlaag)
+   {
+        for (int i = Height; i < Height; i--)
         {
-            gridBezet[a, i + leeg] = gridBezet[a, i];
+            gridBezet[a, i + omlaag] = gridBezet[a, i];
+            grid[a, i + omlaag] = grid[a, i];
             gridBezet[a, i] = Color.Transparent;
+            grid[a, i] = false;
         }
     }
 
     public int GridLegen()
     {
         int leeg = 0;
-
-        for (int rij = Height - 1; rij >= 0; rij--)
-        {
-            if (IsRijVol(rij));
+            for (int rij = Height - 1; rij >= 0; rij--)
             {
-                RijLeegmaken(rij);
-                leeg++;
+                if (IsRijVol(rij) == true) ;
+                {
+                    RijLeegmaken(rij);
+                    leeg++;
+                }
+                if (leeg > 0)
+                {
+                    RijOmlaag(rij, leeg);
+                }
             }
-            if (leeg > 0)
-            {
-                RijOmlaag(rij, leeg);
-            }
-        }
         return leeg;
     }
 

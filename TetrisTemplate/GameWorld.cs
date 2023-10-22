@@ -83,7 +83,6 @@ class GameWorld
         }
 
         grid.GridLegen();
-        
     }
 
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
