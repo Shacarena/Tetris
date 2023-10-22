@@ -82,11 +82,6 @@ class GameWorld
             }
         }
 
-        for (int i = 0; i < grid.Height; i++)
-        {
-            grid.IsRijVol(i);
-        }
-
         grid.GridLegen();
     }
 

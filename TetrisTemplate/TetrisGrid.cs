@@ -46,56 +46,61 @@ class TetrisGrid
         }
     }
 
-    public bool IsRijVol(int rij)
+    public bool IsRijVol(int rij) // kijken of een rij helemaal vol is
     {
-        for (int i = 0; i < Width; i++)
+        for (int i = 0; i < Width; i++) // over de hele breedte van de rij heen
         {
-            if (grid[i, rij] == false)
+            if (grid[i, rij] == false) // kijken of blokken zijn gevuld
             {
-                return false;
+                return false; // als er ook maar een blok niet is gevuld in de rij, false teruggeven
             }
         }
-        return true;
+        return true; // alleen als alle blokken zijn gevuld
     }
 
-    public void RijLeegmaken(int rij)
+    public void RijLeegmaken(int rij) // method om een rij leeg te maken
     {
-        if (IsRijVol(rij))
+        if (IsRijVol(rij)) // eerst checken of de rij daadwerkelijk helemaal vol is
         {
-            for (int i = 0; i < Width; i++)
+            for (int i = 0; i < Width; i++) // over de hele rij heen loopen
             {
-                gridBezet[i, rij] = Color.Transparent;
-                grid[i, rij] = false;
+                gridBezet[i, rij] = Color.Transparent; // kleurgrid op transparant zetten
+                grid[i, rij] = false; // bezet-grid op false
             }
-        }
-    }
-
-    private void RijOmlaag(int a, int omlaag)
-   {
-        for (int i = Height; i < Height; i--)
-        {
-            gridBezet[a, i + omlaag] = gridBezet[a, i];
-            grid[a, i + omlaag] = grid[a, i];
-            gridBezet[a, i] = Color.Transparent;
-            grid[a, i] = false;
         }
     }
 
-    public int GridLegen()
+    private void RijOmlaag(int rij, int omlaag) // om rijden naar beneden te plaatsen
     {
-        int leeg = 0;
-            for (int rij = Height - 1; rij >= 0; rij--)
+        for (int x = 0; x < Width; x++) // over de hele rij heen loopen
+        {
+            grid[x, rij + omlaag] = grid[x, rij]; // alle blokjes genoeg omlaag zetten
+            gridBezet[x, rij + omlaag] = gridBezet[x, rij];
+            grid[x, rij] = false; // oude rij leeghalen
+            gridBezet[x, rij] = Color.Transparent;
+        }
+    }
+    public int GridLegen() // kijken of rijen vol zijn, omlaag moeten, etc
+    {
+        int leeg = 0; // kijken hoeveel rijen naar beneden geplaatst moeten worden
+
+        for (int rij = Height - 1; rij >= 0; rij--) // over de hele hoogte van het grid loopen om te kijken naar iedere rij
+        {
+            if (IsRijVol(rij) == true)// checken of een rij leeg gemaakt moet worden, zo ja;
             {
-                if (IsRijVol(rij) == true) ;
-                {
-                    RijLeegmaken(rij);
-                    leeg++;
-                }
-                if (leeg > 0)
-                {
-                    RijOmlaag(rij, leeg);
-                }
+                RijLeegmaken(rij); // rij leegmaken
+                leeg++; // GridLegen laten weten dat de rest een rij omlaag moet
             }
+        }
+
+        for (int rij = Height - 1; rij >= 0; rij--) // over de hele hoogte van de grid loopen
+        { 
+            if (leeg > 0) // kijken of er rijen omlaag moeten
+            {
+                RijOmlaag(rij, leeg); // rijen naar beneden plaatsen
+            }
+        }
+       
         return leeg;
     }
 
