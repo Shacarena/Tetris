@@ -61,7 +61,7 @@ class TetrisGame : Game
         gameWorld.Reset();
         block = ContentManager.Load<Texture2D>("block");
         theme = Content.Load<Song>("theme");
-        MediaPlayer.Play(theme);
+        // MediaPlayer.Play(theme);
         MediaPlayer.IsRepeating = true;
     }
 

@@ -24,7 +24,7 @@ class TetrisGrid
     public Color[,] gridBezet;
     public bool[,] grid;
 
-    
+
 
     public TetrisGrid()
     {
@@ -34,6 +34,7 @@ class TetrisGrid
         gridBezet = new Color[Width, Height];
         grid = new bool[Width, Height];
     }
+
     public void AddToGrid(TetrisBlock currentblock)
     {
         for (int col = 0; col < currentblock.shape.GetLength(0); col++) // loop through shape
@@ -94,16 +95,15 @@ class TetrisGrid
         }
 
         for (int rij = Height - 1; rij >= 0; rij--) // over de hele hoogte van de grid loopen
-        { 
+        {
             if (leeg > 0) // kijken of er rijen omlaag moeten
             {
                 RijOmlaag(rij, leeg); // rijen naar beneden plaatsen
             }
         }
-       
+
         return leeg;
     }
-
     public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
         // tekenen van de lege grid, voor de achtergrond
@@ -117,12 +117,26 @@ class TetrisGrid
         }
 
         spriteBatch.DrawString(font, "Next block:", new Vector2(390, 20), Color.Black);
+        spriteBatch.DrawString(font, "Level: 1", new Vector2(390, 40), Color.Black);
+        spriteBatch.DrawString(font, "Points: ????", new Vector2(390, 60), Color.Black);
     }
 
+    public void GridReset()
+    {
+        for (int hoogte = 0; hoogte < Height; hoogte++)
+        {
+            for (int breedte = 0; breedte < Width; breedte++)
+            {
+                grid[breedte, hoogte] = false;
+                gridBezet[breedte, hoogte] = Color.Transparent;
+            }
+        }
+    }
     public void DrawGameOver(GameTime gameTime, SpriteBatch spriteBatch)
     {
         spriteBatch.DrawString(font, "GAME OVER", new Vector2(330, 250), Color.Red);
         spriteBatch.DrawString(font, "Press space to start a new game", new Vector2(250, 280), Color.Black);
     }
+
 }
 

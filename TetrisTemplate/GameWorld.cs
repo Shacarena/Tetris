@@ -12,7 +12,7 @@ using System.Threading.Tasks.Dataflow;
 
 class GameWorld
 {
-    private GameState _gameState = GameState.GameOver;
+    private GameState _gameState = GameState.Playing;
     enum GameState
     {
         Playing,
@@ -53,9 +53,13 @@ class GameWorld
         if (inputHelper.KeyPressed(Keys.A)) { currentblock.RotateCounterClockwise(); }
         if (inputHelper.KeyPressed(Keys.F)) { grid.AddToGrid(currentblock); Reset2(); }
 
-        if (_gameState == GameState.GameOver)
+        if (_gameState == GameState.GameOver) // zorgen dat het alleen kan wanneer je GameOver bent
         {
-            if (inputHelper.KeyPressed(Keys.Space)) { _gameState = GameState.Playing; }
+            if (inputHelper.KeyPressed(Keys.Space)) { _gameState = GameState.Playing; } // spacebar indrukken zorgt voor nieuwe game
+            {
+                grid.GridReset();
+                Reset();
+            }
         }
 
         if (_gameState == GameState.Playing)
@@ -70,7 +74,6 @@ class GameWorld
         nextblock = newrandomblock.NewNextBlock();
         currentblock.Reset(grid);
     }
-
     public void Reset2()
     {
         currentblock = nextblock;
