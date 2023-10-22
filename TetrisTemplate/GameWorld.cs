@@ -9,6 +9,8 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.Xna.Framework.Media;
+using System.Reflection.Metadata;
 
 class GameWorld
 {
@@ -23,6 +25,10 @@ class GameWorld
     public static Random Random { get { return random; } }
     static Random random;
     NextBlock newrandomblock;
+    TetrisGame game;
+    Song theme;
+    Song rijleeg;
+    Song levelup;
 
     SpriteFont font;
 
@@ -44,7 +50,10 @@ class GameWorld
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
         grid = new TetrisGrid();
         newrandomblock = new NextBlock();
-}
+        theme = TetrisGame.ContentManager.Load<Song>("theme");
+        rijleeg = TetrisGame.ContentManager.Load<Song>("rijleeg");
+        levelup = TetrisGame.ContentManager.Load<Song>("levelup");
+    }
 
     public void HandleInput(GameTime gameTime, InputHelper inputHelper)
     {
@@ -90,6 +99,7 @@ class GameWorld
         {
             grid.level++;
             if (timer > 0.2) timer -= (long)0.2;
+            MediaPlayer.Play(levelup);
         }
 
         if (DateTimeOffset.Now.ToUnixTimeSeconds() - lastupdate > timer)

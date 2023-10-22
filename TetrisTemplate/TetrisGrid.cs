@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System.ComponentModel.Design;
 using System.Threading;
 using TetrisTemplate;
@@ -9,6 +10,9 @@ class TetrisGrid
     /// The sprite of a single empty cell in the grid.
     Texture2D emptyCell;
     SpriteFont font;
+    Song theme;
+    Song rijleeg;
+    Song levelup;
 
     /// The position at which this TetrisGrid should be drawn.
     Vector2 position;
@@ -31,6 +35,9 @@ class TetrisGrid
     {
         emptyCell = TetrisGame.ContentManager.Load<Texture2D>("block");
         font = TetrisGame.ContentManager.Load<SpriteFont>("SpelFont");
+        theme = TetrisGame.ContentManager.Load<Song>("theme");
+        rijleeg = TetrisGame.ContentManager.Load<Song>("rijleeg");
+        levelup = TetrisGame.ContentManager.Load<Song>("levelup");
         position = Vector2.Zero;
         gridBezet = new Color[Width, Height];
         grid = new bool[Width, Height];
@@ -70,6 +77,7 @@ class TetrisGrid
             {
                 gridBezet[i, rij] = Color.Transparent; // kleurgrid op transparant zetten
                 grid[i, rij] = false; // bezet-grid op false
+                MediaPlayer.Play(rijleeg);
             }
         }
     }

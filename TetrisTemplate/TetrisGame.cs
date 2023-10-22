@@ -11,6 +11,8 @@ class TetrisGame : Game
     public GameWorld gameWorld;
     Texture2D block;
     Song theme;
+    Song rijleeg;
+    Song levelup;
     public GameWorld gameworld { get { return gameWorld; } }
 
     /// <summary>
@@ -61,8 +63,9 @@ class TetrisGame : Game
         gameWorld.Reset();
         block = ContentManager.Load<Texture2D>("block");
         theme = Content.Load<Song>("theme");
-        //MediaPlayer.Play(theme);
-        MediaPlayer.IsRepeating = true;
+        rijleeg = Content.Load<Song>("rijleeg");
+        levelup = Content.Load<Song>("levelup");
+        MediaPlayer.Play(theme);
     }
 
     protected override void Update(GameTime gameTime)
